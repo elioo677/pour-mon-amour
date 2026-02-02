@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Notre Surprise ❤️</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+margin:0;
+font-family:Arial, sans-serif;
+min-height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+background:linear-gradient(135deg,#ff4f8b,#ff8fab,#ffd1dc);
+}
+
+.card{
+background:white;
+border-radius:20px;
+padding:30px 25px;
+width:90%;
+max-width:450px;
+box-shadow:0 10px 25px rgba(0,0,0,0.2);
+text-align:center;
+}
+
+h1{color:#ff2f6e;margin-top:10px}
+
+p{font-size:1.1rem}
+
+.cute-image{font-size:60px;margin-bottom:10px}
+
+input{
+width:100%;
+padding:12px;
+margin-top:15px;
+border-radius:12px;
+border:1px solid #ddd;
+font-size:1rem;
+}
+
+button{
+margin-top:20px;
+padding:12px 25px;
+border:none;
+border-radius:25px;
+background:#ff4d6d;
+color:white;
+font-size:1rem;
+cursor:pointer;
+}
+
+button:hover{background:#ff2f55}
+
+.error{color:red;margin-top:10px;font-size:.9rem}
+
+.poem{
+white-space:pre-line;
+font-style:italic;
+margin-top:15px;
+color:#444;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card" id="app"></div>
+
+<script>
+
+function normalizeText(text){
+  return text.toLowerCase().replace(/^\s+|\s+$/g, "");
+}
+
+var questions=[
+{
+ type:"date",
+ emoji:"💑",
+ question:"Quelle est la date où on s'est mis en couple ?",
+ placeholder:"JJ/MM/AAAA",
+ answer:"06/12/2024"
+},
+{
+ type:"text",
+ emoji:"🍽️❤️",
+ question:"Où avons-nous eu notre premier dîner en amoureux ?",
+ answers:["mito","MITO","Mito","miTo","MiTo"]
+},
+{
+ type:"text",
+ emoji:"🦦💖",
+ question:"Quel est l'animal qui nous unit ?",
+ answers:["ma loutre","ma petite loutre","loutre","MA LOUTRE","MA PETITE LOUTRE","LOUTRE"]
+},
+{
+ type:"text",
+ emoji:"❤️",
+ question:"Est-ce que tu m'aimes ?",
+ answers:["oui","Oui","OUI","bien sur","Bien sur","evidemment","Évidemment"]
+},
+{
+ type:"text",
+ emoji:"🎁",
+ question:"Tu veux ta surprise ?",
+ answers:["oui","Oui","OUI","bien sur","Bien sur","evidemment","Évidemment"]
+}
+];
+
+var poemText="Mon amour,\n\n"+
+"Je t’ai apprivoisée sans m’en rendre compte.\n"+
+"Et maintenant, tu es devenue ma rose.\n"+
+"Pas la plus parfaite,\n"+
+"Mais la seule qui fait battre mon cœur comme ça.\n\n"+
+"C’est le temps que je passe avec toi\n"+
+"Qui te rend unique dans tout l’univers.\n"+
+"Quand tu souris, même les étoiles me paraissent jalouses.\n\n"+
+"Si un jour tu doutes,\n"+
+"Regarde le ciel.\n"+
+"Quelque part, il y a un garçon\n"+
+"Qui t’aime plus que toutes les planètes réunies.\n\n"+
+"Je t'aime. 🌹";
+
+var current=-1;
+var app=document.getElementById("app");
+
+function showIntro(){
+ app.innerHTML =
+ '<div class="cute-image">💖</div>'+
+ '<h1>Bienvenue mon amour</h1>'+
+ '<p>Si tu réponds correctement aux questions,<br>une surprise t\'attend à la fin...</p>'+
+ '<button onclick="nextQuestion()">Commencer 💌</button>';
+}
+
+function nextQuestion(){
+ current++;
+ if(current < questions.length){
+  showQuestion();
+ } else {
+  showPoem();
+ }
+}
+
+function showQuestion(){
+ var q = questions[current];
+ app.innerHTML =
+ '<div class="cute-image">'+q.emoji+'</div>'+
+ '<h1>Question '+(current+1)+'</h1>'+
+ '<p>'+q.question+'</p>'+
+ '<input id="answerInput" placeholder="'+(q.placeholder || 'Ta réponse...')+'">'+
+ '<button onclick="checkAnswer()">Suivant ❤️</button>'+
+ '<div class="error" id="error"></div>';
+}
+
+function checkAnswer(){
+ var input = document.getElementById("answerInput").value;
+ var q = questions[current];
+
+ if(q.type === "date"){
+  if(input === q.answer){
+   nextQuestion();
+  } else {
+   document.getElementById("error").innerHTML = "Mauvaise date 💔";
+  }
+  return;
+ }
+
+ var userAnswer = normalizeText(input);
+ var valid = false;
+
+ for(var i=0;i<q.answers.length;i++){
+  if(userAnswer === normalizeText(q.answers[i])){
+   valid = true;
+   break;
+  }
+ }
+
+ if(valid){
+  nextQuestion();
+ } else {
+  document.getElementById("error").innerHTML = "Réessaie mon amour ❤️";
+ }
+}
+
+function showPoem(){
+ app.innerHTML =
+ '<div class="cute-image">🌹</div>'+
+ '<h1>Ta surprise</h1>'+
+ '<p class="poem">'+poemText+'</p>';
+}
+
+showIntro();
+
+</script>
+</body>
+</html>
